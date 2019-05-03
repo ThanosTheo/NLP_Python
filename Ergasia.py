@@ -56,14 +56,15 @@ def getKnowledge(story,kb):
             else:
                 Noun.append(j[0]);
         if verb in kb.keys():
-            kb[verb]=[kb[verb],Noun];
+            kb[verb].append(Noun);
         else:
-            kb[verb]=Noun;
+            kb[verb]=[Noun];
 
 def QuestionsAndAnswers(kb):
     stop=["stop","done","end"]
     yesorno=['did'];
     question=input("Please type your question:");
+    question=question.lower();
     while not question in stop:
         first_word=question.partition(' ')[0];
         #analyze the question
@@ -77,30 +78,33 @@ def QuestionsAndAnswers(kb):
                 Noun.append(j[0]);
         
         index=-1;
-        max=-1;
+        max=0;
         for i in range(len(kb[verb])):
             same=0;
             same_words=[];
             for j in Noun:
                 if j in kb[verb][i]:
                     same_words.append(j);
+                
                 for z in range(len(same_words)-1):
                     if(kb[verb][i].index(same_words[z])<kb[verb][i].index(same_words[z+1])):
                         same+=1;
                     else:
-                        same=-2;
-            
-            if same>max:
-                index=i;
-                max=same;
-        #FIX same, index    
+                        same=-1;
+                        break;            
+                
+                if same>max:
+                    index=i;
+                    max=same;
+         
         if first_word in yesorno:
             if index<=-1:
-                print("Yes.");
-            else:
                 print("No.");
+            else:
+                print("Yes.");
         else:
             if index!= -1:
+                #formulate the answer.
                 answ_list=kb[verb][index];
                 answer=answ_list[0]+" "+verb;
                 for i in range(1,len(answ_list)):
