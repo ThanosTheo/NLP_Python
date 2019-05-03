@@ -1,0 +1,12 @@
+Jenny reads a book.
+Jenny likes the book.
+Jenny gives the book to John.
+John reads the book.
+Mark gets maried to Jenny.
+John does not like the book.
+John gives the book back to Jenny.
+John kills Jenny.
+Mark is angry.
+Mark kills John.
+Mark kills John's wife.
+Mark burns the book.
