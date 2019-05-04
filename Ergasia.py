@@ -62,7 +62,7 @@ def getKnowledge(story,kb):
 
 def QuestionsAndAnswers(kb):
     stop=["stop","done","end"]
-    yesorno=['did'];
+    yesorno=['did','does','is'];
     question=input("Please type your question:");
     question=question.lower();
     while not question in stop:
@@ -76,43 +76,56 @@ def QuestionsAndAnswers(kb):
                 verb=j[0]
             else:
                 Noun.append(j[0]);
-        
-        index=-1;
-        max=0;
-        for i in range(len(kb[verb])):
-            same=0;
-            same_words=[];
-            for j in Noun:
-                if j in kb[verb][i]:
-                    same_words.append(j);
+
+        if (verb in kb.keys() and len(kb[verb])>0):
+            if first_word in yesorno:
+                exist=False;
+                for i in range(len(kb[verb])):
+                    cnt=0;
+                    for j in Noun:
+                        if j in kb[verb][i]:
+                            cnt+=1;
+                    if cnt==len(Noun):
+                        exist=True;
+                        break;
+                if not exist:
+                    print("No.");
+                else:
+                    print("Yes.");
+            else:
+                index=-1;
+                max=0;
+                for i in range(len(kb[verb])):
+                    same=0;
+                    same_words=[];
+                    for j in Noun:
+                        if j in kb[verb][i]:
+                            same_words.append(j);
+                        
+                        for z in range(len(same_words)-1):
+                            if(kb[verb][i].index(same_words[z])<kb[verb][i].index(same_words[z+1])):
+                                same+=1;
+                            else:
+                                same=-1;
+                                break;            
+                        
+                        if same>max:
+                            index=i;
+                            max=same;
+
                 
-                for z in range(len(same_words)-1):
-                    if(kb[verb][i].index(same_words[z])<kb[verb][i].index(same_words[z+1])):
-                        same+=1;
+                    if index!= -1:
+                        #formulate the answer.
+                        answ_list=kb[verb][index];
+                        answer=answ_list[0]+" "+verb;
+                        for i in range(1,len(answ_list)):
+                            answer=answer+" "+answ_list[i];
+                        answer=answer+".";
+                        print(answer);
                     else:
-                        same=-1;
-                        break;            
-                
-                if same>max:
-                    index=i;
-                    max=same;
-         
-        if first_word in yesorno:
-            if index<=-1:
-                print("No.");
-            else:
-                print("Yes.");
+                        print("I could not find an answer to that.");
         else:
-            if index!= -1:
-                #formulate the answer.
-                answ_list=kb[verb][index];
-                answer=answ_list[0]+" "+verb;
-                for i in range(1,len(answ_list)):
-                    answer=answer+" "+answ_list[i];
-                answer=answer+".";
-                print(answer);
-            else:
-                print("No answer found!");
+                print("I could not find an answer to that.");
 
         #ask again
         question=input("Please type your question:");
