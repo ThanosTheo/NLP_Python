@@ -63,8 +63,6 @@ def getKnowledge(story,kb):
 def QuestionsAndAnswers(kb):
     stop=["stop","done","end"]
     yesorno=['did','does','is'];
-    answerDict={"what":"A ","whatv":"An ","where":"At the ","when": "In ","how":"By "};
-    vowels=["a","e","i","o","u","y"];
     question=input("Please type your question:\n");
     question=question.lower();
     while not question in stop:
@@ -73,19 +71,12 @@ def QuestionsAndAnswers(kb):
         question=getTextReady(question);
         #generate the answer
         Noun=[];
-        if(first_word=="who"):
-             for indx,j in enumerate(question):
-                if(indx==0):
-                    verb=j[0]
-                else:
-                    Noun.append(j[0]);
-        else:
-            for indx,j in enumerate(question):
-                if(indx==1):
-                    verb=j[0]
-                else:
-                    Noun.append(j[0]);
-
+        for indx,j in enumerate(question):
+            if(indx==1):
+                verb=j[0]
+            else:
+                Noun.append(j[0]);
+                
         if (verb in kb.keys() and len(kb[verb])>0):
             if first_word in yesorno:
                 exist=False;
@@ -127,24 +118,14 @@ def QuestionsAndAnswers(kb):
                         if same>max:
                             index=i;
                             max=same;
-                
                 if index!= -1:
                     #formulate the answer.
                     answ_list=kb[verb][index];
-                    for i in answ_list:
-                        if i not in Noun:
-                            if first_word=="who":
-                                answer=i[0].capitalize()+i[1:]+".";
-                                break;
-                            elif first_word=="how":
-                                answer=answerDict[first_word]+verb+"ing "+ i+".";
-                                break;
-                            elif(first_word=="what" and i[0] in vowels):
-                                first_word=first_word+"v";
-                            answer=answerDict[first_word]+i+"."
-                            break;
+                    answer=answ_list[0]+" "+verb;
+                    for i in range(1,len(answ_list)):
+                        answer=answer+" "+answ_list[i];
+                    answer=answer+".";
                     print(answer);
-
                 else:
                     print("I could not find an answer to that.");
         else:

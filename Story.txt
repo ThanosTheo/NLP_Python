@@ -1,12 +1,9 @@
-Jenny reads a book.
-Jenny likes the book.
-Jenny gives the book to John.
-John reads the book.
-Mark gets maried to Jenny.
-John does not like the book.
-John gives the book back to Jenny.
-John kills Jenny.
-Mark is angry.
-Mark kills John.
-Mark kills John's wife.
-Mark burns the book.
+John gives Maria a book.
+Maria reads the book.
+Maria rides a bike.
+John drives a car.
+Maria eats a pair.
+John eats a bannana.
+Maria gives the book back to John.
+John started university in 2019.
+Mark kicks the ball.
