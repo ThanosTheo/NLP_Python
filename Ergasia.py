@@ -61,7 +61,7 @@ def getKnowledge(story,kb):
             kb[verb]=[Noun];
 
 def QuestionsAndAnswers(kb):
-    stop=["stop","done","end"]
+    stop=["stop","done","end","exit"];
     yesorno=['did','does','is'];
     answerDict={"what":"A ","whatv":"An ","where":"At the ","when": "In ","how":"By "};
     vowels=["a","e","i","o","u","y"];
