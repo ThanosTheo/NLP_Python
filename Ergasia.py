@@ -106,7 +106,7 @@ def QuestionsAndAnswers(kb):
 
         if (verb in kb.keys() and len(kb[verb])>0):
             if first_word in yesorno:
-                exist=False;
+                yes=False;
                 for i in range(len(kb[verb])):
                     cnt=0;
                     for j in Noun:
