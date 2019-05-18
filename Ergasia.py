@@ -1,50 +1,67 @@
-from nltk.stem import PorterStemmer,WordNetLemmatizer
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import nltk
 import string
 
-def main():
-    story=[];
-    #read txt.
-    with open("./Story.txt", "r") as fp:
-        for i in fp:
-            story.append(i);
-    
-    ready=[];
-    for i in story:
-        ready.append(getTextReady(i));
-    
-    kb={};
-    getKnowledge(ready,kb);
 
-    QuestionsAndAnswers(kb);
+nltk.download('stopwords');
+nltk.download('punkt');
+nltk.download('averaged_perceptron_tagger');
+
+def main():
+
+	story=[];
+	#read txt.
+	with open("./Story.txt", "r") as fp:
+		for i in fp:
+			story.append(i);
+
+	ready=[];
+	for i in story:
+		ready.append(getTextReady(i));
+
+	kb={};
+	getKnowledge(ready,kb);
+	
+	# print()
+	# print("{")
+	# for i in kb.keys():
+		# print(i+":"+str(kb[i]))
+	# print("}")
+	#input()
+
+	QuestionsAndAnswers(kb);
 
 def getTextReady(line):
-    stop_words = stopwords.words('english');
-    #make all character lower case
-    line=line.lower();
-    #remove punctuation and widespaces
-    line = line.translate(str.maketrans("","", string.punctuation));
-    line = line.strip();
+	#make all character lower case
+	line=line.lower();
+	
+	#remove punctuation and widespaces
+	line = line.translate(str.maketrans("","", string.punctuation));
+	line = line.strip();
 
-    #tockenize 
-    tockenized=[]
-    tockenized=word_tokenize(line);
-    
-    #tagg words
-    tockenized=nltk.pos_tag(tockenized);
+	#tockenize 
+	tockenized=[]
+	tockenized=word_tokenize(line);
 
-    #remove stop words
-    filtered_words = [word for word in tockenized if word[0] not in stop_words];
+	#tagg words
+	tockenized=nltk.pos_tag(tockenized);
+
+	#remove stop words
+	stop_words = stopwords.words('english');
+	filtered_words = [word for word in tockenized if word[0] not in stop_words];
 
     #Stemming
-    stemmer= PorterStemmer();
-    result=[];
-    for i in filtered_words:
-        temp=(stemmer.stem(i[0]),i[1]);
-        result.append(temp);
-    return result; 
+	stemmer= PorterStemmer();
+	result=[];
+	for i in filtered_words:
+		if(i[1][0]=="V"):
+			temp=(stemmer.stem(i[0]),i[1]);
+		else:
+			temp=(i[0],i[1]);
+		result.append(temp);
+	return result; 
 
 def getKnowledge(story,kb):
     #populate kb with story
@@ -63,8 +80,9 @@ def getKnowledge(story,kb):
 def QuestionsAndAnswers(kb):
     stop=["stop","done","end","exit"];
     yesorno=['did','does','is'];
-    answerDict={"what":"A ","whatv":"An ","where":"At the ","when": "In ","how":"By "};
     vowels=["a","e","i","o","u","y"];
+    answerDict={"what":"A ","whatv":"An ","where":"At the ","when": "In "};
+	
     question=input("Please type your question:\n");
     question=question.lower();
     while not question in stop:
@@ -95,9 +113,9 @@ def QuestionsAndAnswers(kb):
                         if j in kb[verb][i]:
                             cnt+=1;
                     if cnt==len(Noun):
-                        exist=True;
+                        yes=True;
                         break;
-                if not exist:
+                if not yes:
                     print("No.");
                 else:
                     print("Yes.");
@@ -135,9 +153,6 @@ def QuestionsAndAnswers(kb):
                         if i not in Noun:
                             if first_word=="who":
                                 answer=i[0].capitalize()+i[1:]+".";
-                                break;
-                            elif first_word=="how":
-                                answer=answerDict[first_word]+verb+"ing "+ i+".";
                                 break;
                             elif(first_word=="what" and i[0] in vowels):
                                 first_word=first_word+"v";
