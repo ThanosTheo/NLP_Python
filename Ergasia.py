@@ -116,9 +116,9 @@ def QuestionsAndAnswers(kb):
                         yes=True;
                         break;
                 if not yes:
-                    print("No.");
+                    print("No.\n");
                 else:
-                    print("Yes.");
+                    print("Yes.\n");
             else:
                 index=-1;
                 max=0;
@@ -158,12 +158,12 @@ def QuestionsAndAnswers(kb):
                                 first_word=first_word+"v";
                             answer=answerDict[first_word]+i+"."
                             break;
-                    print(answer);
+                    print(answer+"\n");
 
                 else:
-                    print("I could not find an answer to that.");
+                    print("I could not find an answer to that.\n");
         else:
-                print("I could not find an answer to that.");
+                print("I could not find an answer to that.\n");
 
         #ask again
         question=input("Please type your question:\n");
